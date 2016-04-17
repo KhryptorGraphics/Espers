@@ -1119,10 +1119,15 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "port=22447\n");
                fprintf(ConfFile, "rpcport=22440\n");
                fprintf(ConfFile, "rpcconnect=127.0.0.1\n");
-               fprintf(ConfFile, "addnode=192.168.1.103:22447\n");
-               fprintf(ConfFile, "addnode=192.168.1.120:22447\n");
-               fprintf(ConfFile, "addnode=192.168.1.117:22447\n");
+               fprintf(ConfFile, "addnode=159.203.12.73:22447\n");
+               fprintf(ConfFile, "addnode=104.236.150.155:22447\n");
+               fprintf(ConfFile, "addnode=159.203.24.196:22447\n");
                fprintf(ConfFile, "addnode=173.18.196.253:22447\n");
+               fprintf(ConfFile, "addnode=46.101.188.194:22447\n");
+               fprintf(ConfFile, "addnode=208.68.36.6:22447\n");
+               fprintf(ConfFile, "addnode=146.185.153.196:22447\n");
+               fprintf(ConfFile, "addnode=188.166.155.131:22447\n");
+               fprintf(ConfFile, "addnode=107.170.212.222:22447\n");
 
                fclose(ConfFile);
                // Returns our config path, created config file is NOT loaded first time...

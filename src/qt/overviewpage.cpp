@@ -9,6 +9,9 @@
 #include "transactionfilterproxy.h"
 #include "guiutil.h"
 #include "guiconstants.h"
+// For mining function
+#include "init.h"
+//#include "main.h"
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
@@ -245,4 +248,36 @@ void OverviewPage::on_pushButton_5_clicked()
 {
     QString link="http://bitcoingarden.tk/forum/index.php?topic=7402.0";
     QDesktopServices::openUrl(QUrl(link));
+}
+
+void OverviewPage::on_pushButton_6_clicked()
+{
+    QString link="http://esp.miningalts.com/";
+    QDesktopServices::openUrl(QUrl(link));
+}
+
+// Mining Button
+int sMine = 0; // Change text per click
+// Actual function
+void OverviewPage::on_pushButton_7_clicked()
+{
+    if (sMine < 1)
+    {
+        this->ui->pushButton_7->setText("Stop Mining");
+        sMine ++;
+        GenerateBitcoins(GetBoolArg("-gen", true), pwalletMain);
+    }
+
+    else if (sMine >= 1)
+    {
+        this->ui->pushButton_7->setText("Start Mining");
+        sMine --;
+        GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
+    }
+
+}
+
+void OverviewPage::on_pushButton_8_clicked()
+{
+    // Meter coming soon
 }
