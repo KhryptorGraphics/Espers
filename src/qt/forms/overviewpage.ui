@@ -64,6 +64,32 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
+          <item row="0" column="1">
+           <spacer name="verticalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="2" column="1">
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
           <item row="1" column="1">
            <widget class="QLabel" name="label_wallet_bgcoin">
             <property name="text">
@@ -96,32 +122,6 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="1">
-           <spacer name="verticalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="2" column="1">
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Vertical</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="1" column="2">
            <spacer name="horizontalSpacer_4">
             <property name="orientation">
@@ -137,12 +137,21 @@
           </item>
           <item row="3" column="1">
            <widget class="QPushButton" name="pushButton_7">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>26</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>8</pointsize>
               <weight>75</weight>
               <bold>true</bold>
              </font>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
              <string notr="true">background-color: rgb(34, 34, 34);
@@ -159,7 +168,21 @@ color: rgb(255, 255, 255);</string>
             <item>
              <widget class="QPushButton" name="pushButton_8">
               <property name="enabled">
-               <bool>false</bool>
+               <bool>true</bool>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="cursor">
+               <cursorShape>PointingHandCursor</cursorShape>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(34, 34, 34);
+selection-background-color: rgb(0, 85, 127);
+color: rgb(255, 255, 255);</string>
               </property>
               <property name="text">
                <string>Get Hash/s</string>
@@ -167,9 +190,29 @@ color: rgb(255, 255, 255);</string>
              </widget>
             </item>
             <item>
-             <widget class="QLabel" name="c_hashrate">
-              <property name="text">
-               <string>Meter Coming Soon</string>
+             <widget class="QPlainTextEdit" name="c_hashrate">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>256</width>
+                <height>26</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(34, 34, 34);
+selection-background-color: rgb(0, 85, 127);
+color: rgb(255, 255, 255);</string>
+              </property>
+              <property name="plainText">
+               <string>0 Hash/s</string>
               </property>
              </widget>
             </item>
@@ -387,6 +430,9 @@ color: rgb(255, 255, 255);</string>
         </item>
         <item row="5" column="0">
          <widget class="QPushButton" name="pushButton_5">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(34, 34, 34);
 selection-background-color: rgb(0, 85, 127);
@@ -493,6 +539,9 @@ color: rgb(255, 255, 255);</string>
         </item>
         <item row="6" column="0">
          <widget class="QPushButton" name="pushButton_6">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="styleSheet">
            <string notr="true">background-color: rgb(34, 34, 34);
 selection-background-color: rgb(0, 85, 127);

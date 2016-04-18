@@ -11,12 +11,20 @@
 #include "guiconstants.h"
 // For mining function
 #include "init.h"
-//#include "main.h"
 
 #include <QAbstractItemDelegate>
 #include <QPainter>
 #include <QDesktopServices>
 #include <QUrl>
+// for hashmeter
+#include <QFile>
+#include <QFileInfo>
+#include <QDir>
+#include <QMessageBox>
+#include <QTextStream>
+#include <QProcess>
+#include <QString>
+
 #define DECORATION_SIZE 64
 #define NUM_ITEMS 3
 
@@ -265,7 +273,27 @@ void OverviewPage::on_pushButton_7_clicked()
     {
         this->ui->pushButton_7->setText("Stop Mining");
         sMine ++;
-        GenerateBitcoins(GetBoolArg("-gen", true), pwalletMain);
+        GenerateBitcoins(GetBoolArg("-gen", true), pwalletMain);       
+        // PreCreate Hashmeter files
+        // Hash/s
+        boost::filesystem::path meterPath;
+        meterPath = GetDefaultDataDir() / "Hashes.sec";
+        FILE* meterFile = fopen(meterPath.string().c_str(), "w");
+        fprintf(meterFile, "0 Hash/s\n");
+        fclose(meterFile);
+        // kHash/s
+        boost::filesystem::path meter2Path;
+        meter2Path = GetDefaultDataDir() / "kHashes.sec";
+        FILE* meter2File = fopen(meter2Path.string().c_str(), "w");
+        fprintf(meter2File, "0 Hash/s\n");
+        fclose(meter2File);
+        // mHash/s
+        boost::filesystem::path meter3Path;
+        meter3Path = GetDefaultDataDir() / "mHashes.sec";
+        FILE* meter3File = fopen(meter3Path.string().c_str(), "w");
+        fprintf(meter3File, "0 Hash/s\n");
+        fclose(meter3File);
+
     }
 
     else if (sMine >= 1)
@@ -273,11 +301,82 @@ void OverviewPage::on_pushButton_7_clicked()
         this->ui->pushButton_7->setText("Start Mining");
         sMine --;
         GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
+        // Set Hashmeter to Zero
+        // Hash/s check
+        if (dHashesPerSec < 1000)
+        {
+            boost::filesystem::path ConfPath;
+            ConfPath = GetDefaultDataDir() / "Hashes.sec";
+            FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+            fprintf(ConfFile, "0 Hash/s\n");
+            fclose(ConfFile);
+        }
+        // kHash/s check
+        else if (dHashesPerSec > 999)
+        {
+            boost::filesystem::path ConfPath;
+            ConfPath = GetDefaultDataDir() / "kHashes.sec";
+            FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+            fprintf(ConfFile, "0 Hash/s\n");
+            fclose(ConfFile);
+        }
+        // mHash/s check
+        else if (dHashesPerSec > 999999)
+        {
+            boost::filesystem::path ConfPath;
+            ConfPath = GetDefaultDataDir() / "mHashes.sec";
+            FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+            fprintf(ConfFile, "0 Hash/s\n");
+            fclose(ConfFile);
+        }
     }
 
 }
 
 void OverviewPage::on_pushButton_8_clicked()
 {
-    // Meter coming soon
+    // Hashmeter-------
+    // Hash/s check
+    if (dHashesPerSec < 1000)
+    {
+        //
+        QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/Hashes.sec";
+        QFile fileV(curtxt);
+        if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
+
+            // error out if not accesable
+            QMessageBox::information(0,"info",fileV.errorString());
+
+        QTextStream inV(&fileV);
+        this->ui->c_hashrate->setPlainText(inV.readAll());
+    }
+    // kHash/s check
+    else if (dHashesPerSec > 999)
+    {
+        //
+        QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/kHashes.sec";
+        QFile fileV(curtxt);
+        if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
+
+            // error out if not accesable
+            QMessageBox::information(0,"info",fileV.errorString());
+
+        QTextStream inV(&fileV);
+        this->ui->c_hashrate->setPlainText(inV.readAll());
+    }
+    // mHash/s check
+    else if (dHashesPerSec > 999999)
+    {
+        //
+        QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/mHashes.sec";
+        QFile fileV(curtxt);
+        if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
+
+            // error out if not accesable
+            QMessageBox::information(0,"info",fileV.errorString());
+
+        QTextStream inV(&fileV);
+        this->ui->c_hashrate->setPlainText(inV.readAll());
+    }
+
 }

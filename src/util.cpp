@@ -1130,6 +1130,7 @@ void ReadConfigFile(map<string, string>& mapSettingsRet,
                fprintf(ConfFile, "addnode=107.170.212.222:22447\n");
 
                fclose(ConfFile);
+
                // Returns our config path, created config file is NOT loaded first time...
                // Wallet will need to be reloaded before config file is properly read...
                return ;

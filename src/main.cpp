@@ -4786,6 +4786,35 @@ void static BitcoinMiner(CWallet *pwallet)
                         //{
                             // nLogTime = GetTime();
                             printf("hashmeter %6.0f khash/s\n", dHashesPerSec/1000.0);
+                            // In-wallet Hashmeter for user visibility
+                            // Display Display appropriet measurement of spead
+                            // Hash/s check
+                            if (dHashesPerSec < 1000)
+                            {
+                                boost::filesystem::path ConfPath;
+                                ConfPath = GetDefaultDataDir() / "Hashes.sec";
+                                FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+                                fprintf(ConfFile, "%6.0f Hash/s\n", dHashesPerSec/1.0);
+                                fclose(ConfFile);
+                            }
+                            // kHash/s check
+                            else if (dHashesPerSec > 999)
+                            {
+                                boost::filesystem::path ConfPath;
+                                ConfPath = GetDefaultDataDir() / "kHashes.sec";
+                                FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+                                fprintf(ConfFile, "%6.0f kHash/s\n", dHashesPerSec/1000.0);
+                                fclose(ConfFile);
+                            }
+                            // mHash/s check
+                            else if (dHashesPerSec > 999999)
+                            {
+                                boost::filesystem::path ConfPath;
+                                ConfPath = GetDefaultDataDir() / "mHashes.sec";
+                                FILE* ConfFile = fopen(ConfPath.string().c_str(), "w");
+                                fprintf(ConfFile, "%6.0f mHash/s\n", dHashesPerSec/1000000.0);
+                                fclose(ConfFile);
+                            }
                         //}
                     }
                 }
