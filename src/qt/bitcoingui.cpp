@@ -362,7 +362,11 @@ void BitcoinGUI::createTrayIcon()
     trayIcon->show();
 #endif
 
-    notificator = new Notificator(QApplication::applicationName(), trayIcon);
+#if BOOST_VERSION > 105700
+    notificator = new Notificator(QApplication::applicationName(), trayIcon, this);
+#else    
+    notificator = new Notificator(QApplication::applicationName(), trayIcon);    
+#endif
 }
 
 void BitcoinGUI::createTrayIconMenu()

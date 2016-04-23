@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = Espers-qt
 macx:TARGET = "Espers-Qt"
-VERSION = 0.8.0.2
+VERSION = 0.8.0.3
 INCLUDEPATH += src src/json src/qt
 QT += core gui widgets network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
@@ -53,7 +53,7 @@ UI_DIR = build
 # use: qmake "RELEASE=1"
 contains(RELEASE, 1) {
     # Mac: compile for maximum compatibility (10.6, 64-bit)
-    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.6 -arch x86_64 -isysroot /Developer/SDKs/MacOSX10.6.sdk
+    macx:QMAKE_CXXFLAGS += -mmacosx-version-min=10.8 -arch x86_64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk/
 
     !win32:!macx {
         # Linux: static link
@@ -188,6 +188,7 @@ src/addrman.h \
 src/base58.h \
 src/bignum.h \
 src/checkpoints.h \
+src/coincontrol.h \
 src/compat.h \
 src/sync.h \
 src/util.h \
@@ -272,7 +273,10 @@ src/sph_shabal.h \
 src/sph_whirlpool.h \
 src/sph_haval.h \
 src/sph_sha2.h \
-src/sph_types.h
+src/sph_types.h \
+    src/coincontrol.h \
+    src/qt/coincontroldialog.h \
+    src/qt/coincontroltreewidget.h
 
 SOURCES += src/qt/bitcoin.cpp \
 src/qt/bitcoingui.cpp \
@@ -358,7 +362,9 @@ src/fugue.c \
 src/shabal.c \
 src/whirlpool.c \
 src/haval.c \
-src/sha2big.c
+src/sha2big.c \
+    src/qt/coincontroldialog.cpp \
+    src/qt/coincontroltreewidget.cpp
 
 RESOURCES += src/qt/bitcoin.qrc
 
@@ -372,7 +378,8 @@ src/qt/forms/overviewpage.ui \
 src/qt/forms/sendcoinsentry.ui \
 src/qt/forms/askpassphrasedialog.ui \
 src/qt/forms/rpcconsole.ui \
-src/qt/forms/optionsdialog.ui
+src/qt/forms/optionsdialog.ui \
+    src/qt/forms/coincontroldialog.ui
 
 contains(USE_QRCODE, 1) {
 HEADERS += src/qt/qrcodedialog.h
@@ -424,32 +431,48 @@ src/qt/test/*.h
 
 # platform specific defaults, if not overridden on command line
 isEmpty(BOOST_LIB_SUFFIX) {
-macx:BOOST_LIB_SUFFIX = -mt
-win32:BOOST_LIB_SUFFIX = -mgw44-mt-s-1_53
+    macx:BOOST_LIB_SUFFIX = -mt
+    windows:BOOST_LIB_SUFFIX = -mgw44-mt-1_53
 }
 
 isEmpty(BOOST_THREAD_LIB_SUFFIX) {
-BOOST_THREAD_LIB_SUFFIX = $$BOOST_LIB_SUFFIX
+    BOOST_THREAD_LIB_SUFFIX = $$BOOST_LIB_SUFFIX
 }
 
 isEmpty(BDB_LIB_PATH) {
-macx:BDB_LIB_PATH = /opt/local/lib/db48
+    macx:BDB_LIB_PATH = /usr/local/lib
 }
 
 isEmpty(BDB_LIB_SUFFIX) {
-macx:BDB_LIB_SUFFIX = -4.8
+    macx:BDB_LIB_SUFFIX = -4.8
 }
 
 isEmpty(BDB_INCLUDE_PATH) {
-macx:BDB_INCLUDE_PATH = /opt/local/include/db48
+    macx:BDB_INCLUDE_PATH = /usr/local/include/
 }
 
 isEmpty(BOOST_LIB_PATH) {
-macx:BOOST_LIB_PATH = /opt/local/lib
+    macx:BOOST_LIB_PATH = /usr/local/lib
 }
 
 isEmpty(BOOST_INCLUDE_PATH) {
-macx:BOOST_INCLUDE_PATH = /opt/local/include
+    macx:BOOST_INCLUDE_PATH = /usr/local/include
+}
+
+isEmpty(OPENSSL_LIB_PATH) {
+    macx:OPENSSL_LIB_PATH = /usr/local/lib
+}
+
+isEmpty(OPENSSL_INCLUDE_PATH) {
+    macx:OPENSSL_INCLUDE_PATH = /usr/local/include
+
+}
+isEmpty(MINIUPNPC_LIB_PATH) {
+    macx:MINIUPNPC_LIB_PATH = /usr/local/lib
+}
+
+isEmpty(MINIUPNPC_INCLUDE_PATH) {
+    macx:MINIUPNPC_INCLUDE_PATH = /usr/local/include
 }
 
 win32:DEFINES += WIN32
@@ -473,15 +496,15 @@ LIBS += -lrt
 DEFINES += _FILE_OFFSET_BITS=64
 }
 
-macx:HEADERS += src/qt/macdockiconhandler.h
-macx:OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm
+macx:HEADERS += src/qt/macdockiconhandler.h src/qt/macnotificationhandler.h
+macx:OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm src/qt/macnotificationhandler.mm
 macx:LIBS += -framework Foundation -framework ApplicationServices -framework AppKit
 macx:DEFINES += MAC_OSX MSG_NOSIGNAL=0
 macx:ICON = src/qt/res/icons/bitcoin.icns
 macx:QMAKE_CFLAGS_THREAD += -pthread
 macx:QMAKE_LFLAGS_THREAD += -pthread
 macx:QMAKE_CXXFLAGS_THREAD += -pthread
-macx:QMAKE_INFO_PLIST = share/qt/Info.plist
+#macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
 INCLUDEPATH += $$BOOST_INCLUDE_PATH $$BDB_INCLUDE_PATH $$OPENSSL_INCLUDE_PATH $$QRENCODE_INCLUDE_PATH

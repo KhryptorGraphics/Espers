@@ -25,6 +25,8 @@
 #include <QProcess>
 #include <QString>
 
+#include <QStandardPaths>
+
 #define DECORATION_SIZE 64
 #define NUM_ITEMS 3
 
@@ -340,7 +342,13 @@ void OverviewPage::on_pushButton_8_clicked()
     if (dHashesPerSec < 1000)
     {
         //
+#ifdef Q_OS_LINUX
+		QString curtxt = QDir::homePath() + "/.Espers/Hashes.sec";
+#elif defined(Q_OS_MAC)
+        QString curtxt = QDir::homePath() + QDir::toNativeSeparators("/Library/Application Support/Espers/Hashes.sec");
+#else // Windows
         QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/Hashes.sec";
+#endif 
         QFile fileV(curtxt);
         if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
 
@@ -354,7 +362,13 @@ void OverviewPage::on_pushButton_8_clicked()
     else if (dHashesPerSec > 999)
     {
         //
+#ifdef Q_OS_LINUX
+		QString curtxt = QDir::homePath() + "/.Espers/kHashes.sec";
+#elif defined(Q_OS_MAC)
+        QString curtxt = QDir::homePath() + QDir::toNativeSeparators("/Library/Application Support/Espers/kHashes.sec");
+#else //Windows
         QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/kHashes.sec";
+#endif        
         QFile fileV(curtxt);
         if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
 
@@ -368,7 +382,13 @@ void OverviewPage::on_pushButton_8_clicked()
     else if (dHashesPerSec > 999999)
     {
         //
+#ifdef Q_OS_LINUX
+		QString curtxt = QDir::homePath() + "/.Espers/mHashes.sec";
+#elif defined(Q_OS_MAC)
+        QString curtxt = QDir::homePath() +  QDir::toNativeSeparators("/Library/Application Support/Espers/mHashes.sec");
+#else //Windows
         QString curtxt = QDir::homePath() + "/AppData/Roaming/Espers/mHashes.sec";
+#endif    
         QFile fileV(curtxt);
         if(!fileV.open(QIODevice::ReadOnly | QIODevice::Text))
 

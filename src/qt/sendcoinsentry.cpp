@@ -24,7 +24,7 @@ SendCoinsEntry::SendCoinsEntry(QWidget *parent) :
 #if QT_VERSION >= 0x040700
     /* Do not move this to the XML file, Qt before 4.7 will choke on it */
     ui->addAsLabel->setPlaceholderText(tr("Enter a label for this address to add it to your address book"));
-    ui->payTo->setPlaceholderText(tr("Enter a Espers address (e.g. oL398BQeVW15fxeestaa8LjxyM5r7RuvZg)"));
+    ui->payTo->setPlaceholderText(tr("Enter an Espers address (e.g. EbENTy3x9Mr4PcmnNyzfdSALfkPaFSW3dt)"));
 #endif
     setFocusPolicy(Qt::TabFocus);
     setFocusProxy(ui->payTo);
@@ -72,6 +72,8 @@ void SendCoinsEntry::setModel(WalletModel *model)
 
     if(model && model->getOptionsModel())
         connect(model->getOptionsModel(), SIGNAL(displayUnitChanged(int)), this, SLOT(updateDisplayUnit()));
+
+    connect(ui->payAmount, SIGNAL(textChanged()), this, SIGNAL(payAmountChanged()));
 
     clear();
 }
