@@ -609,7 +609,7 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
         if (nBlockSize == 1)
         {
             // Transactions under 10K are free
-            // (about 4500 BTC if made of 50 BTC inputs)
+            // (about 2,500,000 ESP if made of 50 ESP inputs from mined blocks)
             if (nBytes < 10000)
                 nMinFee = 0;
         }
@@ -621,12 +621,15 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
         }
     }
 
-    // To limit dust spam, require base fee if any output is less than 0.01
+    // TODO: PROPERLY ADDRESS THIS ISSUE! CURRENT SEMI-HACK FIX WILL WORK BUT IS NOT PRETTY NOR DESIRED
+    // To limit dust spam, require base fee if any output is less than 1.00
+    // Temp Fix for Espers, this will need a more thorough look over before exiting Alpha
     if (nMinFee < nBaseFee)
     {
         BOOST_FOREACH(const CTxOut& txout, vout)
-            if (txout.nValue < CENT)
-                nMinFee = nBaseFee;
+            if (txout.nValue < COIN) // Changed dust size to "< 1.00" fee charge
+                nMinFee = CENT; //Prev condition: nBaseFee - swapped during temp fix for Espers Alpha platform
+                                // By setting nMinFee to equal "CENT" this negates the "> 0.01" tx issue
     }
 
     // Raise the price as the block approaches full

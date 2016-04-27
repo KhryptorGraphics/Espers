@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = Espers-qt
 macx:TARGET = "Espers-Qt"
-VERSION = 0.8.0.3
+VERSION = 0.8.0.4
 INCLUDEPATH += src src/json src/qt
 QT += core gui widgets network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE
