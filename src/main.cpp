@@ -50,9 +50,9 @@ bool fTxIndex = false;
 unsigned int nCoinCacheSize = 5000;
 
 /** Fees smaller than this (in satoshi) are considered zero fee (for transaction creation) */
-int64 CTransaction::nMinTxFee = 10;  // Override with -mintxfee
+int64 CTransaction::nMinTxFee = CENT;  // Override with -mintxfee
 /** Fees smaller than this (in satoshi) are considered zero fee (for relaying) */
-int64 CTransaction::nMinRelayTxFee = 100;
+int64 CTransaction::nMinRelayTxFee = CENT;
 
 CMedianFilter<int> cPeerBlockCounts(8, 0); // Amount of blocks that other nodes claim to have
 
@@ -602,6 +602,8 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
 
     unsigned int nBytes = ::GetSerializeSize(*this, SER_NETWORK, PROTOCOL_VERSION);
     unsigned int nNewBlockSize = nBlockSize + nBytes;
+
+    // TODO: PROPERLY ADDRESS THIS ISSUE! CURRENT SEMI-HACK FIX WILL WORK BUT IS NOT PRETTY NOR DESIRED
     int64 nMinFee = (1 + (int64)nBytes / 1000) * nBaseFee;
 
     if (fAllowFree)
@@ -629,7 +631,6 @@ int64 CTransaction::GetMinFee(unsigned int nBlockSize, bool fAllowFree,
         BOOST_FOREACH(const CTxOut& txout, vout)
             if (txout.nValue < COIN) // Changed dust size to "< 1.00" fee charge
                 nMinFee = CENT; //Prev condition: nBaseFee - swapped during temp fix for Espers Alpha platform
-                                // By setting nMinFee to equal "CENT" this negates the "> 0.01" tx issue
     }
 
     // Raise the price as the block approaches full
